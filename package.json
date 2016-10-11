@@ -1,0 +1,26 @@
+{
+  "name": "ww-server",
+  "version": "1.0.0",
+  "description": "Backend server for wondererwanderer",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "jasmine-node spec --forceexit"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "jasmine-node": "^1.14.5",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.6.3",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.11.0",
+    "request": "^2.75.0",
+    "supertest": "^2.0.0"
+  }
+}
