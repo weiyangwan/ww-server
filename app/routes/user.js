@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+var secret = "hierl&934i/+_jdf34dfhe";
 
 var User = require('../models/user.model')
 
@@ -28,5 +30,34 @@ router.post('/', function(req, res, next) {
 
   })
 });
+
+router.post('/signin', function(req, res, next) {
+  User.findOne({ email: req.body.email }, function(err, user) {
+    if(err) {
+      return res.status(500).json({
+        title: "Sign Up Error",
+        error: err
+      });
+    }
+    if (!user)  {
+      return res.status(401).json({
+        title: "Sign in error",
+        error: { message: "Please check your email and password again"}
+      })
+    }
+    if (!bcrypt.compareSync(req.body.password, user.password))  {
+      return res.status(401).json({
+        title: "Sign in error",
+        error: { message: "Please check your email and password again"}
+      })
+    }
+    var token = jwt.sign({user: user}, secret, { expiresIn: 31536000} )
+    res.status(200).json({
+      message: "Sign In Successful",
+      token: token,
+      userId: user._id
+    })
+  });
+})
 
 module.exports = router;
