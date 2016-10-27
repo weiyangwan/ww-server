@@ -3,8 +3,8 @@ var express = require('./config/express');
 var mongoose = require('./config/mongoose');
 
 //Require routes
-var authRoutes = require('./app/routes/auth');
-var userRoutes = require('./app/routes/user');
+var authRoutes = require('./app/routes/auth.routes');
+var userRoutes = require('./app/routes/user.routes');
 
 //Require Passport for authentication
 var passport = require('passport');

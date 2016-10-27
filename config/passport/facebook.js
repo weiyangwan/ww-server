@@ -7,7 +7,8 @@ module.exports = function(passport) {
   passport.use('facebook', new FacebookStrategy({
     clientID: facebookConfig.facebookID,
     clientSecret: facebookConfig.facebookSecret,
-    callbackURL: facebookConfig.facebookCallbackUrl
+    callbackURL: facebookConfig.facebookCallbackUrl,
+    profileFields: ['id', 'displayName', 'email']
   },
 
   // facebook will send back the tokens and profile
@@ -18,6 +19,7 @@ module.exports = function(passport) {
 
       //find user in the database based on their facebook email
       User.findOne({ 'email': profile.emails }, function(err, user)  {
+        console.log("Finding facebook user in server");
         if (err) return done(err);
 
         //Is the user log in here if user is found????
@@ -28,7 +30,7 @@ module.exports = function(passport) {
 
           newUser.username = profile.name.givenName;
           newUser.email = profile.email;
-          newUser.profilePhoto = profile.picture.data.url //need to confirm this
+          // newUser.profilePhoto = profile.picture.data.url //need to confirm this
 
           newUser.save(function(err)  {
             if (err) throw err;
