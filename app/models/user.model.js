@@ -22,7 +22,11 @@ var UserSchema = new Schema({
   posts:[{
     type: Schema.Types.ObjectId,
     ref: 'Post'
-  }]
+  }],
+  created_at: {
+    type : Date,
+    default: Date.now
+  }
 })
 
 UserSchema.pre('save', function(next) {

@@ -68,9 +68,32 @@ module.exports = {
   },
 
   show: function(req, res, next)  {
-    console.log(req.body);
-    console.log("request for user details received");
-    res.json({user: "User request", name: "name name"})
+    User.findById(req.params.id)
+        .populate('posts')
+        .exec(function(err, user)  {
+          if (err)  {
+            return res.status(500).json({
+              title: "An error occurred",
+              error: err
+            })
+          }
+          if (!user)  {
+            return res.status(500).json({
+              title: "User not found",
+              error: {message: "User not found"}
+            })
+          }
+          res.status(200).json({
+            title: "User found",
+            user: {
+              username: user.username,
+              id: user._id,
+              email: user.email,
+              created_at: user.created_at,
+              posts: user.posts
+            }
+          })
+    })
   }
   //
   // update:

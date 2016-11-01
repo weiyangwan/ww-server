@@ -13,7 +13,7 @@ router.get('/:id', userController.show);
 
 // router.route('/:id')
 //       .get(userController.show)
-//       .put(userController.update)
+//       .patch(userController.update)
 //       .delete(userController.destroy);
 
 module.exports = router;
