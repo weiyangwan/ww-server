@@ -5,7 +5,8 @@ var mongoose = require('./config/mongoose');
 //Require routes
 var authRoutes = require('./app/routes/auth.routes'),
     userRoutes = require('./app/routes/user.routes'),
-    postRoutes = require('./app/routes/post.routes');
+    postRoutes = require('./app/routes/post.routes'),
+    itineraryRoutes = require('./app/routes/itinerary.routes');
 
 //Require Passport for authentication
 var passport = require('passport');
@@ -36,6 +37,7 @@ initPassport(passport);
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/posts', postRoutes);
+app.use('/itinerary', itineraryRoutes);
 
 //Set port
 app.set('port', ( process.env.PORT || 9000 ));

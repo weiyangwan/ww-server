@@ -28,8 +28,9 @@ module.exports = function(passport) {
         } else {
           var newUser = new User();
 
-          newUser.username = profile.name.givenName;
-          newUser.email = profile.email;
+          newUser.username = profile.displayName;
+          newUser.email = profile.emails[0].value;
+          newUser.password = "facebook";
           // newUser.profilePhoto = profile.picture.data.url //need to confirm this
 
           newUser.save(function(err)  {

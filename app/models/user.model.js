@@ -5,23 +5,27 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
   username: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   email: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
     unique: true,
   },
   password: {
     type: String,
-    required: true,
+    // required: true,
     trim: true,
   },
   posts:[{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  itineraries:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Itinerary'
   }],
   created_at: {
     type : Date,

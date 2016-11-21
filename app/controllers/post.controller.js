@@ -7,6 +7,7 @@ var secret = "hierl&934i/+_jdf34dfhe";
 module.exports = {
   index: function(req, res, next) {
     Post.find()
+        .populate('user', 'username')
         .exec(function(err, posts)  {
           if (err)  {
             return res.status(500).json({
@@ -23,9 +24,7 @@ module.exports = {
 
   new: function(req, res, next) {
     var decodedToken = jwt.decode(req.query.token);
-    console.log(decodedToken);
     User.findById(decodedToken.user._id, function(err, user)  {
-      console.log('managed to find user: ' + user)
       if (err)  {
         return res.status(500).json({
           title: "Error occurred while posting new content",
@@ -34,12 +33,12 @@ module.exports = {
       }
       var post = new Post({
         content: req.body.content,
-        user: user
+        user: user //this saves the whole user object
       })
       post.save(function(err, result) {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while posting new content",
+            title: "Error occurred while saving new content",
             error: err
           })
         }

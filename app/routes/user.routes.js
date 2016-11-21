@@ -10,6 +10,10 @@ router.post('/new', userController.new);
 router.post('/signin', userController.signin);
 
 router.get('/:id', userController.show);
+router.delete('/:id', userController.destroy);
+
+router.get('/navigationLinks/:id', userController.navigationLinks)
+
 
 // router.route('/:id')
 //       .get(userController.show)

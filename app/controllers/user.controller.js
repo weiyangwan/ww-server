@@ -70,6 +70,7 @@ module.exports = {
   show: function(req, res, next)  {
     User.findById(req.params.id)
         .populate('posts')
+        .populate('itineraries', 'name dateFrom dateTo')
         .exec(function(err, user)  {
           if (err)  {
             return res.status(500).json({
@@ -90,13 +91,71 @@ module.exports = {
               id: user._id,
               email: user.email,
               created_at: user.created_at,
-              posts: user.posts
+              posts: user.posts,
+              itineraries: user.itineraries
             }
           })
     })
-  }
+  },
   //
   // update:
   //
-  // destroy:
+
+  //need to find post of Users to delete as well
+  destroy: function(req, res, next) {
+    User.findById(req.params.id, function(err, user)  {
+      if (err)  {
+        return res.status(500).json({
+          title: "Error occurred while deleting post",
+          error: err
+        })
+      }
+      if (!user)  {
+        return res.status(500).json({
+          title: "User not found",
+          error: { message: "User not found" }
+        })
+      }
+      user.remove(function(err, result) {
+        if (err)  {
+          return res.status(500).json({
+            title: "Error occurred while deleting user",
+            error: err
+          })
+        }
+        res.status(200).json({
+          message: "User deleted",
+          obj: result
+        })
+      })
+    })
+  },
+
+  navigationLinks: function(req, res, next) {
+    User.findById(req.params.id)
+      .populate('itineraries', 'name dateFrom dateTo')
+      .exec(function(err, user)  {
+        if (err)  {
+          return res.status(500).json({
+            title: "An error occurred",
+            error: err
+          })
+        }
+        if (!user)  {
+          return res.status(500).json({
+            title: "User not found",
+            error: { message: "User not found" }
+          })
+        }
+        res.status(200).json({
+          title: "User found",
+          user: {
+            username: user.username,
+            id: user._id,
+            itineraries: user.itineraries
+          }
+        })
+    })
+  },
+
 }

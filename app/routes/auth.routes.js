@@ -10,10 +10,12 @@ router.get('/login/facebook',
 //GET /auth/facebook/callback
 router.get('/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/',
+    successRedirect: 'http://localhost:4200/home',
     failureRedirect: '/'
   })
 );
+
+// router.get('/facebook/callback')
 
 //GET /auth/logout
 router.get('logout', function(req, res) {
