@@ -1,13 +1,15 @@
 var Post = require('mongoose').model('Post');
 var User = require('mongoose').model('User');
+var mongoose = require('mongoose');
 
 var jwt = require('jsonwebtoken');
 var secret = "hierl&934i/+_jdf34dfhe";
 
 module.exports = {
   index: function(req, res, next) {
-    Post.find()
-        .populate('user', 'username')
+    var decodedToken = jwt.decode(req.query.token);
+    Post.find({"user": mongoose.Types.ObjectId(decodedToken.user._id)})
+        .populate('user')
         .exec(function(err, posts)  {
           if (err)  {
             return res.status(500).json({

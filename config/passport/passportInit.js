@@ -17,6 +17,6 @@ module.exports = function(passport){
   });
 
   // Setting up Passport Strategies for Facebook
-  facebook(passport);
+  // facebook(passport);
 
 }

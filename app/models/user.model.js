@@ -16,7 +16,10 @@ var UserSchema = new Schema({
   },
   password: {
     type: String,
-    // required: true,
+    trim: true,
+  },
+  displayPic: {
+    type: String,
     trim: true,
   },
   posts:[{

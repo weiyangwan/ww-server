@@ -4,24 +4,10 @@ var mongoose = require('mongoose'),
 
 
 var PostSchema = new Schema({
-  content:  {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    // required: true,
-    ref: 'User'
-  },
-  username: {
-    type: String,
-    trim: true
-  },
-  created_at: {
-    type : Date,
-    default: Date.now
-  }
+  content:  { type: String, trim: true, required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  username: { type: String, trim: true },
+  created_at: { type: Date, default: Date.now }
 })
 
 PostSchema.post('remove', function(post)  {

@@ -8,12 +8,15 @@ var userController = require('../controllers/user.controller');
 //user sign up
 router.post('/new', userController.new);
 router.post('/signin', userController.signin);
+router.post('/social-login', userController.socialSignin);
 
-router.get('/:id', userController.show);
-router.delete('/:id', userController.destroy);
+router.get('/', userController.index)
+router.get('/currentUser', userController.show)
+router.delete('/currentUser', userController.destroy);
 
-router.get('/navigationLinks/:id', userController.navigationLinks)
+// router.get('/userItinerariesList', userController.userItinerariesList)
 
+// router.get('/:id', userController.show);
 
 // router.route('/:id')
 //       .get(userController.show)
