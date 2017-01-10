@@ -1,3 +1,3 @@
 module.exports = {
-  db: 'mongodb://localhost/wondererwanderer'
+  db: process.env.PROD_MONGODB,
 };
