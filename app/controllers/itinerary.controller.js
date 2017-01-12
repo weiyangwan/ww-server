@@ -1,31 +1,32 @@
 var Itinerary = require('mongoose').model('Itinerary');
 var User = require('mongoose').model('User');
+var EventItem = require('mongoose').model('EventItem');
 
 var jwt = require('jsonwebtoken');
 var secret = "hierl&934i/+_jdf34dfhe";
 
 module.exports = {
-  index: function(req, res, next) {
-    Itinerary.findById(req.params.id)
-      .exec(function(err, itinerary)  {
-        if (err)  {
-          return res.status(500).json({
-            title: "Error occurred while creating itinerary",
-            error: err
-          })
-        }
-        if (!itinerary)  {
-          return res.status(500).json({
-            title: "Itinerary not found",
-            error: { message: "Itinerary not found" }
-          })
-        }
-        res.status(200).json({
-          message: "Itinerary retrieved",
-          itinerary: itinerary
-        })
-      })
-  },
+  // index: function(req, res, next) {
+  //   Itinerary.findById(req.params.id)
+  //     .exec(function(err, itinerary)  {
+  //       if (err)  {
+  //         return res.status(500).json({
+  //           title: "Error occurred while creating itinerary",
+  //           error: err
+  //         })
+  //       }
+  //       if (!itinerary)  {
+  //         return res.status(500).json({
+  //           title: "Itinerary not found",
+  //           error: { message: "Itinerary not found" }
+  //         })
+  //       }
+  //       res.status(200).json({
+  //         message: "Itinerary retrieved",
+  //         itinerary: itinerary
+  //       })
+  //     })
+  // },
 
   show: function(req, res, next) {
     Itinerary.findById(req.params.id)
@@ -34,7 +35,7 @@ module.exports = {
       .exec(function(err, itinerary)  {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while creating itinerary",
+            title: "Error occurred while finding itinerary",
             error: err
           })
         }
@@ -51,13 +52,12 @@ module.exports = {
       })
   },
 
-  list: function(req, res, next) {
+  detailed: function(req, res, next) {
     Itinerary.findById(req.params.id)
-      .populate('activities')
       .exec(function(err, itinerary)  {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while creating itinerary",
+            title: "Error occurred while finding itinerary",
             error: err
           })
         }
@@ -68,17 +68,33 @@ module.exports = {
           })
         }
 
-        var itinList = [];
-        for (var i = 0; i < itinerary['accommodations'].length; i++) {
-          itinList.push(itinerary['accommodations'][i]);
-        }
-        for (var i = 0; i < itinerary['activities'].length; i++) {
-          itinList.push(itinerary['activities'][i]);
-        }
+        EventItem.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
+                .sort({date: 1})
+                .sort({time: 1})
+                .exec(function(err, events)  {
+                  if (err)  {
+                    return res.status(500).json({
+                      title: "Error occurred while populating events for itinerary",
+                      error: err
+                    })
+                  }
+                  itinerary['events'] = events;
+                })
+
+        Resource.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
+                .exec(function(err, resources)  {
+                  if (err)  {
+                    return res.status(500).json({
+                      title: "Error occurred while populating resources for itinerary",
+                      error: err
+                    })
+                  }
+                  itinerary['resources'] = resources;
+                })
 
         res.status(200).json({
           message: "Itinerary list retrieved",
-          itineraryList: itinList
+          itinerary: itinerary
         })
       })
   },

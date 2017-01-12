@@ -5,9 +5,7 @@ var EventItem = require('../models/event.model');
 var eventController = require('../controllers/event.controller');
 
 router.get('/', eventController.index)
-
-// router.post('/new', eventController.new)
-router.post('/custom/:id', eventController.custom)
+router.post('/new/:id', eventController.new)
 router.patch('/:id', eventController.update)
 router.delete('/:id', eventController.destroy)
 

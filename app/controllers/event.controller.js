@@ -25,12 +25,12 @@ module.exports = {
             })
   },
 
-  custom: function(req, res, next) {
+  new: function(req, res, next) {
     var decodedToken = jwt.decode(req.query.token);
     User.findById(decodedToken.user._id, function(err, user)  {
       if (err)  {
         return res.status(500).json({
-          title: "Error occurred while creating creating custom event",
+          title: "Error occurred while creating creating new item",
           error: err
         })
       }
@@ -79,29 +79,24 @@ module.exports = {
       eventItem.save(function(err, result) {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while saving new creating custom event",
+            title: "Error occurred while saving new creating new item",
             error: err
           })
         }
-        Itinerary.findById(req.params.id, function(err, itinerary)  {
-          if (err)  {
-            return res.status(500).json({
-              title: "Error occurred while searching for itinerary",
-              error: err
-            })
-          }
-          if (!itinerary)  {
-            return res.status(500).json({
-              title: "Itinerary not found",
-              error: { message: "Itinerary not found" }
-            })
-          }
-          itinerary.events.push(result);
-          itinerary.save()
-        })
+
+        var message;
+        if(result['type'] === 'activity') {
+          message = 'Activity ' + result['name'] + ' saved'
+        }
+        if(result['type'] === 'accommodation') {
+          message = 'Accommodation ' + result['name'] + ' saved'
+        }
+        if(result['type'] === 'transport') {
+          message = result['transportType'] + ' from ' + result['depCity'] + ' to ' + result['arrCity'] + ' saved'
+        }
         result.user.username = req.body.user.username;
         res.status(200).json({
-          message: "Custom event saved",
+          message: message,
           eventItem: result
         })
       })
@@ -112,17 +107,16 @@ module.exports = {
     EventItem.findById(req.params.id, function(err, eventItem)  {
       if (err)  {
         return res.status(500).json({
-          title: "Error occurred while editing event",
+          title: "Error occurred while editing item",
           error: err
         })
       }
       if (!eventItem)  {
         return res.status(500).json({
-          title: "Event not found",
-          error: { message: "Event not found" }
+          title: "Item not found",
+          error: { message: "Item not found" }
         })
       }
-      console.log(eventItem);
       eventItem.categories = req.body.categories,
       eventItem.type = req.body.type,
       eventItem.country = req.body.country,
@@ -164,12 +158,24 @@ module.exports = {
       eventItem.save(function(err, result) {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while saving edited event",
+            title: "Error occurred while saving edited item",
             error: err
           })
         }
+
+        var message;
+        if(result['type'] === 'activity') {
+          message = 'Edited activity ' + result['name'] + ' saved'
+        }
+        if(result['type'] === 'accommodation') {
+          message = 'Edited accommodation ' + result['name'] + ' saved'
+        }
+        if(result['type'] === 'transport') {
+          message = 'Edited ' + result['transportType'] + ' from ' + result['depCity'] + ' to ' + result['arrCity'] + ' saved'
+        }
+
         res.status(200).json({
-          message: "Edited event saved",
+          message: message,
           obj: result
         })
       })
@@ -180,25 +186,36 @@ module.exports = {
     EventItem.findById(req.params.id, function(err, eventItem)  {
       if (err)  {
         return res.status(500).json({
-          title: "Error occurred while deleting eventItem",
+          title: "Error occurred while deleting item",
           error: err
         })
       }
       if (!eventItem)  {
         return res.status(500).json({
-          title: "Event not found",
-          error: { message: "Event not found" }
+          title: "Item not found",
+          error: { message: "Item not found" }
         })
       }
       eventItem.remove(function(err, result) {
         if (err)  {
           return res.status(500).json({
-            title: "Error occurred while deleting event",
+            title: "Error occurred while deleting item",
             error: err
           })
         }
+
+        var message;
+        if(result['type'] === 'activity') {
+          message = 'Activity ' + result['name'] + ' deleted'
+        }
+        if(result['type'] === 'accommodation') {
+          message = 'Accommodation ' + result['name'] + ' deleted'
+        }
+        if(result['type'] === 'transport') {
+          message = result['transportType'] + ' from ' + result['depCity'] + ' to ' + result['arrCity'] + ' deleted'
+        }
         res.status(200).json({
-          message: "Event deleted",
+          message: message,
           obj: result
         })
       })
