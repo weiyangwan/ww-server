@@ -1,3 +1,3 @@
 module.exports = {
-  db:process.env.PROD_MONGODB,
+  db: process.env.PROD_MONGODB,
 };

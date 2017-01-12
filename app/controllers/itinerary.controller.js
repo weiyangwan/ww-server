@@ -1,6 +1,7 @@
 var Itinerary = require('mongoose').model('Itinerary');
 var User = require('mongoose').model('User');
-var EventItem = require('mongoose').model('EventItem');
+// var EventItem = require('mongoose').model('EventItem');
+// var Resource = require('mongoose').model('Resource');
 
 var jwt = require('jsonwebtoken');
 var secret = "hierl&934i/+_jdf34dfhe";
@@ -68,29 +69,29 @@ module.exports = {
           })
         }
 
-        EventItem.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
-                .sort({date: 1})
-                .sort({time: 1})
-                .exec(function(err, events)  {
-                  if (err)  {
-                    return res.status(500).json({
-                      title: "Error occurred while populating events for itinerary",
-                      error: err
-                    })
-                  }
-                  itinerary['events'] = events;
-                })
+        // EventItem.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
+        //         .sort({date: 1})
+        //         .sort({time: 1})
+        //         .exec(function(err, events)  {
+        //           if (err)  {
+        //             return res.status(500).json({
+        //               title: "Error occurred while populating events for itinerary",
+        //               error: err
+        //             })
+        //           }
+        //           itinerary['events'] = events;
+        //         })
 
-        Resource.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
-                .exec(function(err, resources)  {
-                  if (err)  {
-                    return res.status(500).json({
-                      title: "Error occurred while populating resources for itinerary",
-                      error: err
-                    })
-                  }
-                  itinerary['resources'] = resources;
-                })
+        // Resource.find({"itinerary": mongoose.Types.ObjectId(req.query.itinId)})
+        //         .exec(function(err, resources)  {
+        //           if (err)  {
+        //             return res.status(500).json({
+        //               title: "Error occurred while populating resources for itinerary",
+        //               error: err
+        //             })
+        //           }
+        //           itinerary['resources'] = resources;
+        //         })
 
         res.status(200).json({
           message: "Itinerary list retrieved",
