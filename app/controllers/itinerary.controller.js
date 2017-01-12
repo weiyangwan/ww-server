@@ -29,6 +29,7 @@ module.exports = {
 
   show: function(req, res, next) {
     Itinerary.findById(req.params.id)
+      .select('-events')
       .populate('members', 'username displayPic')
       .exec(function(err, itinerary)  {
         if (err)  {
